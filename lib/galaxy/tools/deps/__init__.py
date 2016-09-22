@@ -22,7 +22,7 @@ EXTRA_CONFIG_KWDS = {
     'conda_debug': None,
     'conda_ensure_channels': 'r,bioconda,iuc',
     'conda_auto_install': False,
-    'conda_auto_init': True,
+    'conda_auto_init': False,
 }
 
 CONFIG_VAL_NOT_FOUND = object()
@@ -96,6 +96,7 @@ class DependencyManager( object ):
                                             version=requirement.version,
                                             type=requirement.type,
                                             **kwds )
+                log.debug(dependency.resolver_msg)
             dependency_commands = dependency.shell_commands( requirement )
             if not dependency_commands:
                 log.warning( "Failed to resolve dependency on '%s', ignoring", requirement.name )
