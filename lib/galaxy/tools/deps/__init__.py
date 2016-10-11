@@ -20,9 +20,10 @@ EXTRA_CONFIG_KWDS = {
     'conda_prefix': None,
     'conda_exec': None,
     'conda_debug': None,
-    'conda_ensure_channels': 'r,bioconda,iuc',
+    'conda_ensure_channels': 'conda-forge,r,bioconda,iuc',
     'conda_auto_install': False,
     'conda_auto_init': False,
+    'conda_copy_dependencies': False,
 }
 
 CONFIG_VAL_NOT_FOUND = object()
