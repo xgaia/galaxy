@@ -11,7 +11,7 @@ sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(__file__), os.pa
 
 from galaxy.tool_util.deps import docker_util
 
-def parse_ports():
+def parse_ports(container_name, connection_configuration):
     while True:
         ports_command = docker_util.build_docker_simple_command("port", container_name=container_name, **connection_configuration)
         with tempfile.TemporaryFile() as stdout_file:
@@ -22,8 +22,7 @@ def parse_ports():
             if exit_code == 0:
                 stdout_file.seek(0)
                 ports_raw = stdout_file.read()
-                break
-
+                return ports_raw
 
 def main():
     open("monitor.log", 'w+').write('HXR monitor script running')
@@ -40,8 +39,7 @@ def main():
     ports_raw = None
     for i in range(10):
         try:
-            ports_raw = parse_ports()
-
+            ports_raw = parse_ports(container_name, connection_configuration)
             if ports_raw is not None:
                 host_ip = socket.gethostbyname(socket.gethostname())
                 with open("container_runtime.json", "w") as f:
@@ -50,7 +48,7 @@ def main():
                     for key in ports:
                         ports[key]['host'] = host_ip
                     json.dump(ports, f)
-		break
+                break
             else:
                 raise Exception("Failed to recover ports...")
         except Exception as e:
