@@ -24,15 +24,14 @@
         </environment_variable> <!-- FIXME: We should have a better way to get user's API key -->
     </environment_variables>
     <command><![CDATA[
-        ln -s '${infile}' /srv/shiny-server/data/inputdata.txt &&
         /usr/bin/shiny-server.sh
     ]]>
     </command>
     <inputs>
-        <param name="infile" type="data" format="tabular,txt" label="Tabular in Clarion format"/>
+        <!--param name="infile" type="data" format="csv" label="csv file with for first columns: 'name', 'longitude', 'latitude' informations"/-->
     </inputs>
     <outputs>
-        <!--data name="outfile" format="txt" /-->
+        <!--data name="outfile" format="rdata" /-->
     </outputs>
     <tests>
     </tests>
@@ -42,7 +41,7 @@
 
 
 
-`Wallace <https://github.molgen.mpg.de/loosolab/wilson-apps/wiki>`_ is a modular platform for reproducible modeling of species niches and distributions.
+`Wallace <https://wallaceecomod.github.io/>`_ is a flexible platform for reproducible modeling of species niches and distributions.
 
 .. class:: infomark
 
