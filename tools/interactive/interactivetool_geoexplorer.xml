@@ -1,0 +1,68 @@
+<tool id="interactive_tool_geoexplorer" tool_type="interactive" name="geoexplorer" version="0.1">
+    <description>An interactive spatial analysis platform using ggvis and Leaflet</description>
+    <requirements>
+        <container type="docker">ylebras/geoexplorer-docker</container>
+    </requirements>
+    <entry_points>
+        <entry_point name="geoexplorer visualisation" requires_domain="True">
+            <port>3838</port>
+            <url>/sample-apps/SIG/</url>
+        </entry_point>
+    </entry_points>
+    <environment_variables>
+        <environment_variable name="HISTORY_ID">$__history_id__</environment_variable>
+        <environment_variable name="REMOTE_HOST">$__galaxy_url__</environment_variable>
+        <environment_variable name="GALAXY_WEB_PORT">8080</environment_variable>
+        <environment_variable name="GALAXY_URL">$__galaxy_url__</environment_variable>
+        <environment_variable name="API_KEY" inject="api_key" />
+        </environment_variable>
+    </environment_variables>
+    <command><![CDATA[
+
+        /usr/bin/shiny-server.sh
+
+    ]]>
+    </command>
+    <inputs>
+        <param name="infile" type="data" format="csv" label="csv file"/>
+    </inputs>
+    <outputs>
+        <!--data name="outfile" format="txt" /-->
+    </outputs>
+    <tests>
+    </tests>
+    <help>
+<![CDATA[
+
+
+`GeoExplorer <https://radiant-rstats.github.io/docs/>`_ is An interactive spatial analysis platform using ggvis and Leaflet.
+
+Author: David Stephens
+
+App: http://www.davesteps.com/geoExploreR/
+
+.. class:: infomark
+
+Example input file (TAB separated)::
+
+  "name"	"longitude"	"latitude"	"countryCode"
+  Accipiter striatus Vieillot, 1808	-60.291838	46.328137	CA
+  Accipiter striatus Vieillot, 1808	-114.58927	35.022485	US
+  Accipiter striatus Vieillot, 1808	-93.37406	30.00586	US
+  Accipiter striatus Vieillot, 1808	-79.336288	43.682218	CA
+  Accipiter striatus Vieillot, 1808	-109.156024	31.904185	US
+  Accipiter striatus Vieillot, 1808	-71.098031	42.297408	US
+  Accipiter striatus Vieillot, 1808	-110.927215	32.18203	US
+
+]]>
+    </help>
+    <citations>
+           <citation type="bibtex">@misc{githubsurvey2018,
+           author       = {davesteps},
+           title        = {{dashboard to visualise geographic data}},
+           publisher    = {Github},
+           url          = {https://github.com/davesteps/geoExploreR}
+           }
+          }</citation>
+    </citations>
+</tool>
