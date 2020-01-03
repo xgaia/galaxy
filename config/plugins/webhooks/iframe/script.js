@@ -21,7 +21,7 @@ $(document).ready(function() {
 			this.$el.html(this.appTemplate());
 			this.$iframe = this.$('#webhook-iframe-parent');
 
-			$.getJSON(galaxyRoot + 'api/webhooks/iframe/get_data', function(data) {
+			$.getJSON(galaxyRoot + 'api/webhooks/iframe/data', function(data) {
 				self.$iframe.html(self.iframeTemplate({src: data.src, height: data.height, title: data.title}));
 			});
 			return this;
