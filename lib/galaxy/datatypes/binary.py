@@ -746,7 +746,7 @@ class BcfUncompressed(BaseBcf):
 
 
 class HIC(Binary):
-     """
+    """
     Class describing an Juicer hic file
 
     >>> from galaxy.datatypes.sniff import get_test_fname
