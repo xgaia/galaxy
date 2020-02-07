@@ -12,6 +12,19 @@ sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(__file__), os.pa
 from galaxy.tool_util.deps import docker_util
 
 
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        ip = s.getsockname()[0]
+    except Exception:
+        ip = socket.gethostbyname(socket.getfqdn())
+    finally:
+        s.close()
+    return ip
+
+
 def parse_ports(container_name, connection_configuration):
     while True:
         ports_command = docker_util.build_docker_simple_command("port", container_name=container_name, **connection_configuration)
@@ -42,7 +55,7 @@ def main():
             ports_raw = parse_ports(container_name, connection_configuration)
             if ports_raw is not None:
                 try:
-                    host_ip = socket.gethostbyname(socket.gethostname())
+                    host_ip = get_ip()
                 except Exception:
                     # doesn't work on OS X
                     host_ip = None
