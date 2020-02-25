@@ -1,6 +1,6 @@
-<tool id="interactive_tool_climate_notebook" tool_type="interactive" name="Interactive Climate Notebook" version="0.1">
+<tool id="interactive_tool_climate_notebook" tool_type="interactive" name="Interactive Climate Notebook" version="0.2">
     <requirements>
-        <container type="docker">nordicesmhub/docker-climate-notebook:1.0</container>
+        <container type="docker">nordicesmhub/docker-climate-notebook:1.2</container>
     </requirements>
     <entry_points>
         <entry_point name="Climate Interactive Tool" requires_domain="True">
@@ -21,8 +21,11 @@
         mkdir -p ./jupyter/outputs/ &&
         mkdir -p ./jupyter/data &&
 
-        #set $cleaned_name = re.sub('[^\w\-\.]', '_', str($input.element_identifier))
-        ln -sf '$input' './jupyter/data/${cleaned_name}' &&
+        #if $input:
+            #set $cleaned_name = re.sub('[^\w\-\.]', '_', str($input.element_identifier))
+            get -t hid -i '${input.hid}' &&
+            ln -sf '/import/${input.hid}' './jupyter/data/${cleaned_name}' &&
+        #end if
 
         ## change into the directory where the notebooks are located
         cd ./jupyter/ &&
@@ -36,9 +39,10 @@
             cp ./ipython_galaxy_notebook.ipynb '$jupyter_notebook'
 
         #else:
-            #set $cleaned_name = re.sub('[^\w\-\.]', '_', str($input.element_identifier))
-            cp '$mode.ipynb' ./${cleaned_name}.ipynb &&
-            jupyter trust ./${cleaned_name}.ipynb &&
+            #set $cleaned_name = re.sub('[^\w\-\.]', '_', str($mode.ipynb.element_identifier))
+            get -t hid -i '${mode.ipynb.hid}' &&
+            ln -sf '/import/${mode.ipynb.hid}' './data/${cleaned_name}' &&
+            jupyter trust ./data/${cleaned_name} &&
 
             #if $mode.run_it:
                 jupyter nbconvert --to notebook --execute --output ./ipython_galaxy_notebook.ipynb --allow-errors  ./*.ipynb &&
@@ -47,6 +51,7 @@
             #end if
             cp ./ipython_galaxy_notebook.ipynb '$jupyter_notebook'
         #end if
+
     ]]>
     </command>
     <inputs>
