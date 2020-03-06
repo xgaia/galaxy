@@ -1282,7 +1282,7 @@ class SCool(H5):
                     if fmt == MAGIC or url == URL:
                         if not all(name in handle[matrix].keys() for name in keys):
                             return False
-                 return True
+                return True
         return False
 
     def set_peek(self, dataset, is_multi_byte=False):
