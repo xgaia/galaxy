@@ -16,7 +16,7 @@
                                     @keyup.esc.native="filterText = ''"
                                 />
                                 <b-input-group-append>
-                                    <b-btn :disabled="!filter" @click="filter = ''">Clear (esc)</b-btn>
+                                    <b-btn :disabled="!filterText" @click="filterText = ''">Clear (esc)</b-btn>
                                 </b-input-group-append>
                             </b-input-group>
                         </b-form-group>
