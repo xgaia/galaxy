@@ -72,8 +72,7 @@ var FolderListView = Backbone.View.extend({
         if (this.options.include_deleted) {
             this.folderContainer.url = `${this.folderContainer.url}?include_deleted=true`;
         }
-        this.listenTo(this.folderContainer, "fetch:started", this.drawSpinner());
-
+        this.drawSpinner()
         this.folderContainer.fetch({
             success: function (folder_container) {
                 self.removeSpinner()
