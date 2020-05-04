@@ -72,12 +72,16 @@ var FolderListView = Backbone.View.extend({
         if (this.options.include_deleted) {
             this.folderContainer.url = `${this.folderContainer.url}?include_deleted=true`;
         }
+        this.listenTo(this.folderContainer, "fetch:started", this.drawSpinner());
+
         this.folderContainer.fetch({
-            success: function(folder_container) {
+            success: function (folder_container) {
+                self.removeSpinner()
                 self.folder_container = folder_container;
                 self.render();
             },
             error: function(model, response) {
+                self.removeSpinner()
                 const Galaxy = getGalaxyInstance();
                 if (typeof response.responseJSON !== "undefined") {
                     Toast.error(`${response.responseJSON.err_msg} Click this to go back.`, "", {
@@ -217,6 +221,17 @@ var FolderListView = Backbone.View.extend({
             self.renderOne(model);
         });
         this.postRender();
+    },
+
+    drawSpinner: function (options) {
+        const spinner = `<div id="folder_items_spinner" style="text-align: center;">
+                            <span class="fa fa-spinner fa-spin" style="font-size:5em !important;"/>
+                       </div>`
+        $("#folder_items_element").append(spinner);
+    },
+
+    removeSpinner: function (options) {
+        $("#folder_items_spinner").remove();
     },
 
     /**
@@ -494,6 +509,7 @@ var FolderListView = Backbone.View.extend({
 
             <!-- FOLDER CONTENT -->
             <table data-library-id="<%- parent_library_id  %>" class="grid table table-hover table-sm">
+
                 <thead>
                     <th class="button_heading"></th>
                     <th class="mid" style="width: 20px;"

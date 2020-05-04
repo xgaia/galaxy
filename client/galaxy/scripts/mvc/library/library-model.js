@@ -123,6 +123,10 @@ var FolderContainer = Backbone.Model.extend({
             }
         }
         return obj;
+    },
+    fetch: function (options) {
+        this.trigger("fetch:started");
+        Backbone.Collection.prototype.fetch.call(this, options);
     }
 });
 
