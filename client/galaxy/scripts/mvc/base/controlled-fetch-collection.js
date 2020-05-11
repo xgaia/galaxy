@@ -28,6 +28,7 @@ var ControlledFetchCollection = Backbone.Collection.extend({
      */
     fetch: function(options) {
         options = this._buildFetchOptions(options);
+        this.trigger("fetch:started");
         const Galaxy = getGalaxyInstance();
         Galaxy.debug("fetch options:", options);
         return Backbone.Collection.prototype.fetch.call(this, options);
