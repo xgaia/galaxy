@@ -72,15 +72,13 @@ var FolderListView = Backbone.View.extend({
         if (this.options.include_deleted) {
             this.folderContainer.url = `${this.folderContainer.url}?include_deleted=true`;
         }
-        this.drawSpinner()
+        this.listenTo(this.folderContainer, "fetch:started", this.drawSpinner());
         this.folderContainer.fetch({
             success: function (folder_container) {
-                self.removeSpinner()
                 self.folder_container = folder_container;
                 self.render();
             },
             error: function(model, response) {
-                self.removeSpinner()
                 const Galaxy = getGalaxyInstance();
                 if (typeof response.responseJSON !== "undefined") {
                     Toast.error(`${response.responseJSON.err_msg} Click this to go back.`, "", {
@@ -96,7 +94,7 @@ var FolderListView = Backbone.View.extend({
                     });
                 }
             }
-        });
+        }).always(self.removeSpinner);
     },
 
     render: function(options) {
@@ -227,10 +225,12 @@ var FolderListView = Backbone.View.extend({
                             <span class="fa fa-spinner fa-spin" style="font-size:5em !important;"/>
                        </div>`
         $("#folder_items_element").append(spinner);
+        $(".page_size").hide();
     },
 
     removeSpinner: function (options) {
         $("#folder_items_spinner").remove();
+        $(".page_size").show();
     },
 
     /**
